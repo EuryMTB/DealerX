@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DealerX", "DealerX.csproj", "{3DB4C978-0642-427B-91F0-14886CBE49F8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3DB4C978-0642-427B-91F0-14886CBE49F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DB4C978-0642-427B-91F0-14886CBE49F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DB4C978-0642-427B-91F0-14886CBE49F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DB4C978-0642-427B-91F0-14886CBE49F8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {56D21808-635C-4F73-B198-ECE71897364D}
+	EndGlobalSection
+EndGlobal
