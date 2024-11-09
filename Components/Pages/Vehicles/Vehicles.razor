@@ -1,0 +1,100 @@
+﻿@page "/vehicles"
+@using DealerX.Shared
+@inject IJSRuntime JsRuntime
+@rendermode InteractiveServer
+<h3>Vehicles</h3>
+
+<button @onclick="()=>{ShowForm =!ShowForm;}"> @(ShowForm ? "Cerrar" : "Agregar")</button>
+
+@if (ShowForm)
+{
+
+	<Register Notification="NotificationRegister"></Register>
+}
+
+else
+{
+	@if (AllVehicles.Any())
+	{
+		@foreach (var vehicle in AllVehicles)
+		{
+			<div class="card ">
+				<div class="card-header">
+					<h5 class="card-title">  @vehicle.model.Brand.Name - @vehicle.model.Name </h5>
+
+				</div>
+				<div class="card-body ">
+					<p class="card-text">
+						<span class="card-text-bold">Price:</span> @vehicle.Price
+						<br>
+						<span class="card-text-bold">State:</span> @vehicle.Condition
+					</p>
+					<a class="btn btn-primary">Learn More</a>
+				</div>
+			</div>
+
+			<br />
+		}
+	}
+	else
+	{
+		<p class="alert">No vehicles available</p>
+	}
+}
+@code {
+
+	public List<VehicleResponse> AllVehicles { get; set; } = new List<VehicleResponse>();
+	public List<Data.Entities.Vehicle> Test { get; set; } = new List<Data.Entities.Vehicle>();
+
+	public bool ShowForm { get; set; }
+	protected override void OnAfterRender(bool firstRender)
+	{
+		if (firstRender)
+		{
+			Cargar();
+		}
+	}
+	void NotificationRegister(Result result)
+	{
+		@if (result.Succeeded)
+		{
+			Cargar();
+		}
+		ShowForm = false;
+	}
+
+
+
+
+	public async void Cargar()
+	{
+	
+		
+	
+		var r = await serv.Get();
+
+		if (r.Succeeded)
+		{
+			AllVehicles = r.Data?.ToList() ?? AllVehicles;
+			StateHasChanged();
+		}
+		else
+		{
+			await JsRuntime.InvokeVoidAsync("console.warn", "Error");
+
+		}
+	}
+
+
+
+	public void GetModel(VehicleResponse response)
+	{
+		// var r = ServModel.GetById(response.ModelId);
+		// if (r.Succeeded)
+		// {
+		// 	response.model =  r.Data ?? new ModelResponse();
+		// }
+		return;
+
+	}
+}

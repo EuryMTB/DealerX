@@ -1,6 +1,8 @@
 using System.Runtime.CompilerServices;
 using DealerX.Components;
 using DealerX.Data.Context;
+using DealerX.Services.Vehicle;
+using DealerX.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,5 +31,8 @@ app.Run();
 
  static void ConfigureServices(IServiceCollection service){
 	service.AddDbContext<IdbContext, dbContext>();
+	service.AddScoped<IVehicleService, VehicleService>();
+	service.AddScoped<IModelService, ModelService>();
+	service.AddScoped<IStaticDataService, StaticDataService>();
 
 }

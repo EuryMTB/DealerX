@@ -1,11 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DealerX.Contants;
+using DealerX.Data.Request;
+using DealerX.Data.Response;
 
 namespace DealerX.Data.Entities;
 
 public class Vehicle
 {
+
+	#region Property
+
 	[Key]
 	public int Id { get; set; }
 	//              Y E A R 
@@ -24,10 +29,9 @@ public class Vehicle
 
 	public int Price { get; set; }
 	public string Description { get; set; } = "Perfect for you";
-
-
-
-	public Byte[][] Images { get; set; } = [];
+    public bool Available { get; set; }
+	public List<string> Images { get; set; } = new List<string>();
+	#endregion
 
 	#region  Foreign Keys :: Model, Engine
 	public int ModelId { get; set; }
@@ -39,8 +43,28 @@ public class Vehicle
 	[ForeignKey(nameof(EngineId))]
 	public virtual Engine Engine { get; set; } = null!;
 
-    #endregion
+	#endregion
 
+	#region Methods
+
+	
+	public static Vehicle Create(VehicleRequest r){
+		return new Vehicle()
+		{
+			Year = r.Year,
+			Doors = r.Doors,
+			Condition = r.Condition,
+			Type = r.Type,
+			MaxWeigh = r.MaxWeigh,
+			Price = r.Price,
+			Available = r.Available,
+			Description = r.Description,
+			Images = r.Images,
+			ModelId = r.ModelId,
+			EngineId = r.EngineId
+		};
+	}
+	#endregion
 
 
 }
