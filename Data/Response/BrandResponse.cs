@@ -18,10 +18,8 @@ public class ModelResponse
 	public int Id { get; set; }
 	public string Name { get; set; } = null!;
 	public string Image { get; set; } = null!;
-    public int BrandId { get; set; }
-    public Brand Brand { get; set; } = null!;
-
-
+	public int BrandId { get; set; }
+	public BrandResponse Brand { get; set; } = null!;
 }
 public class VehicleResponse
 {
@@ -43,17 +41,17 @@ public class VehicleResponse
 
 	public int Price { get; set; }
 	public string Description { get; set; } = "Perfect for you";
-	public List<string> Images { get; set; } = new ();
-    public int ModelId { get; set; }
-    //public ModelResponse Model { get; set; } = null!;
-    public ModelResponse model { get; set; } = null!;
+	public List<string> Images { get; set; } = new();
+	public int ModelId { get; set; }
+	//public ModelResponse Model { get; set; } = null!;
+	public ModelResponse model { get; set; } = null!;
 	public int EngineId { get; set; }
 
-	public Engine Engine { get; set; } = null!;
-    public string GetImage(string Image) => $"data:image/png;base64,{Image}";
+	public EngineResponse Engine { get; set; } = null!;
+	public string GetImage(string Image) => $"data:image/png;base64,{Image}";
 
 
-    public VehicleRequest ToRequest()
+	public VehicleRequest ToRequest()
 	{
 		return new()
 		{
@@ -71,4 +69,43 @@ public class VehicleResponse
 		};
 	}
 
+}
+
+public class EngineResponse
+{
+	public EngineResponse(Engine engine)
+	{
+		Id = engine.Id;
+		CC = engine.CC;
+		HorsePower = engine.HorsePower;
+		Cylinder = engine.Cylinder;
+		TopSpeed = engine.TopSpeed;
+		Turbo = engine.Turbo;
+		AccelerationZeroTo100 = engine.AccelerationZeroTo100;
+		AccelerationZeroTo200 = engine.AccelerationZeroTo200;
+		ConsumeUrban = engine.ConsumeUrban;
+		ConsumeSubUrb = engine.ConsumeSubUrb;
+		FuelType = engine.FuelType;
+	}
+
+	public EngineResponse()
+	{
+
+	}
+
+	public int Id { get; set; }
+	public int CC { get; set; }
+	public decimal HorsePower { get; set; }
+	public int Cylinder { get; set; }
+	public int TopSpeed { get; set; }
+	public bool Turbo { get; set; }
+	public decimal? AccelerationZeroTo100 { get; set; }
+	public decimal? AccelerationZeroTo200 { get; set; }
+
+	public decimal ConsumeUrban { get; set; }
+	public decimal ConsumeSubUrb { get; set; }
+	public string FuelType { get; set; } = null!;
+
+
+	public string Description => $"{HorsePower} HP: {Cylinder} Cylinder : {FuelType}";
 }

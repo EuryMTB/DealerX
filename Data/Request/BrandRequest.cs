@@ -45,11 +45,55 @@ public class VehicleRequest
 
 	[Required(ErrorMessage = "The Description is required.")]
 	public string Description { get; set; } = "Perfect for you";
-	
+
 	[AtLeastOneItemListString(ErrorMessage = "At least one image has to be provided.")]
 	public List<string> Images { get; set; } = new List<string>();
+
+	[Range(1,int.MaxValue, ErrorMessage = "It has to have an Available model")]
 	public int ModelId { get; set; }
+	[Range(1, int.MaxValue, ErrorMessage = "It has to have an Available Engine")]
+
 	public int EngineId { get; set; }
 
 
+}
+
+public class EngineRequest()
+{
+
+	public int Id { get; set; }
+
+	[Range(ConsEngine.CylinderMin, ConsEngine.CylinderMax)]
+	public int CC { get; set; }
+
+
+	[Range(ConsEngine.HPMin, ConsEngine.HPMax), Column(TypeName = "decimal(18,2)")]
+
+	public decimal HorsePower { get; set; }
+
+
+	[Range(ConsEngine.CylinderMin, ConsEngine.CylinderMax)]
+	public int Cylinder { get; set; } = ConsEngine.CylinderMin;
+
+
+	[Range(ConsEngine.Positive, double.MaxValue)]
+	public int TopSpeed { get; set; }
+
+	public bool Turbo { get; set; }
+
+	[Range(ConsEngine.Positive, (double)decimal.MaxValue), Column(TypeName = "decimal(18,2)")]
+	public decimal? AccelerationZeroTo100 { get; set; }
+
+	[Range(ConsEngine.Positive, (double)decimal.MaxValue), Column(TypeName = "decimal(18,2)")]
+	public decimal? AccelerationZeroTo200 { get; set; }
+
+
+	[Range(ConsEngine.Positive, (double)decimal.MaxValue), Column(TypeName = "decimal(18,2)")]
+	public decimal ConsumeUrban { get; set; }
+
+
+	[Range(ConsEngine.Positive, (double)decimal.MaxValue), Column(TypeName = "decimal(18,2)")]
+	public decimal ConsumeSubUrb { get; set; }
+
+	public string FuelType { get; set; } = null!;
 }

@@ -68,9 +68,6 @@ else
 
 	public async void Cargar()
 	{
-	
-		
-	
 		var r = await serv.Get();
 
 		if (r.Succeeded)
@@ -80,8 +77,8 @@ else
 		}
 		else
 		{
-			await JsRuntime.InvokeVoidAsync("console.warn", "Error");
-
+			//await JsRuntime.InvokeVoidAsync("console.warn", "Error");
+			return;
 		}
 	}
 

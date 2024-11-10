@@ -6,7 +6,12 @@ using DealerX.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DealerX.Services.Vehicle;
+public interface IVehicleService
+{
+	Task<Result> Create(VehicleRequest request);
+	Task<ResultList<VehicleResponse>> Get(string filter = "", bool All = false);
 
+}
 public class VehicleService : IVehicleService
 {
 	private readonly IdbContext context;
@@ -37,18 +42,18 @@ public class VehicleService : IVehicleService
 					Name = x.Model.Name,
 					Image = "NO",
 					BrandId = x.Model.BrandId,
-					Brand = x.Model.Brand
-
+					Brand = new BrandResponse()
+					{
+						Name = x.Model.Brand.Name,
+						Image = x.Model.Brand.Image
+					}
 				},
-				Engine = x.Engine,
+				Engine = new EngineResponse(x.Engine),
 				EngineId = x.EngineId,
 				Available = x.Available
 			}).ToListAsync();
 			var rr = context.Vehicles.ToList();
-			foreach (var x in vehicles)
-			{
-				Console.WriteLine($"Data::: {x.model.Name}");
-			}
+
 			if (!All)
 			{
 				vehicles = vehicles.Where(x => x.Available).ToList();
@@ -62,7 +67,7 @@ public class VehicleService : IVehicleService
 		}
 	}
 
-	
+
 	public async Task<Result> Create(VehicleRequest request)
 	{
 		try
@@ -81,32 +86,3 @@ public class VehicleService : IVehicleService
 }
 
 
-public class ModelService(IdbContext context) : IModelService
-{
-
-	public Result<ModelResponse> GetById(int id)
-	{
-		try
-		{
-			var model = context.Models.FirstOrDefault(x => x.Id == id);
-			if (model is not null)
-			{
-				return Result<ModelResponse>.Success(new ModelResponse()
-				{
-					BrandId = model.BrandId,
-					Name = model.Name,
-					Id = model.Id,
-					Image = model.Image,
-				});
-			}
-			else
-			{
-				return Result<ModelResponse>.Failure($"Model hasn't found");
-			}
-		}
-		catch (Exception e)
-		{
-			return Result<ModelResponse>.Failure($"Error: {e.Message}");
-		}
-	}
-}

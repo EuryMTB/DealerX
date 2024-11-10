@@ -29,10 +29,13 @@ app.MapRazorComponents<App>()
 
 app.Run();
 
- static void ConfigureServices(IServiceCollection service){
+static void ConfigureServices(IServiceCollection service)
+{
 	service.AddDbContext<IdbContext, dbContext>();
 	service.AddScoped<IVehicleService, VehicleService>();
-	service.AddScoped<IModelService, ModelService>();
 	service.AddScoped<IStaticDataService, StaticDataService>();
+	service.AddScoped<IBrandService, BrandService>();
+	service.AddScoped<IModelService, ModelService>();
+	service.AddScoped<IEngineService, EngineService>();
 
 }
