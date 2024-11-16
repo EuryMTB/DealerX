@@ -34,7 +34,7 @@ public class VehicleService : IVehicleService
 				MaxWeigh = x.MaxWeigh,
 				Price = x.Price,
 				Description = x.Description,
-				Images = new List<string>(),
+				Images = x.Images,
 				ModelId = x.ModelId,
 				model = new ModelResponse()
 				{
@@ -60,6 +60,7 @@ public class VehicleService : IVehicleService
 			}
 
 			return ResultList<VehicleResponse>.Success(vehicles);
+
 		}
 		catch (Exception Ex)
 		{

@@ -20,6 +20,7 @@ public class EngineService(IdbContext context) : IEngineService
 			{
 				Id = x.Id,
 				CC = x.CC,
+				Description = $"HP: {x.HorsePower} Cylinder: {x.Cylinder} FuelType : {x.FuelType}",
 				HorsePower = x.HorsePower,
 				Cylinder = x.Cylinder,
 				TopSpeed = x.TopSpeed,

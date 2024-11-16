@@ -29,8 +29,8 @@ public class ModelService(IdbContext context) : IModelService
 					Id = x.Brand.Id,
 					Image = x.Brand.Image
 				}
-			}).ToList();
-			if (r is not null && r.Count > 0)
+			}).OrderBy(x => x.Brand.Name).ToList();
+			if (r is not null )
 			{
 				return ResultList<ModelResponse>.Success(r);
 			}

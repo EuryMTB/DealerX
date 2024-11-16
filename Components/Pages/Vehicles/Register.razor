@@ -1,6 +1,7 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @using DealerX.Data.Request
 @using DealerX.Shared
+@using System.Text
 @inject IJSRuntime js
 
 @page "/vehicle-registration"
@@ -15,13 +16,12 @@
 
 		<div class="col-md-6">
 			@* 	Brand *@
-
 			<div class="mb-3">
 				<label for="brand" class="form-label">Brand:</label>
 				<InputSelect class="form-control" id="brand"
-							 Value="@CurrentBrandId"
-							 ValueExpression="@(()=>CurrentBrandId)"
-							 ValueChanged="@((int x)=>BrandChangedEvent(x))">
+				Value="@CurrentBrandId"
+				ValueExpression="@(()=>CurrentBrandId)"
+				ValueChanged="@((int x)=>BrandChangedEvent(x))">
 					<option disabled value="0" selected> Choose a brand</option>
 					@foreach (var brand in Brands)
 					{
@@ -31,14 +31,10 @@
 
 			</div>
 
-
-
 			@* 	Model *@
 			<div class="mb-3">
 				<label for="model" class="form-label">Model:</label>
-				<InputSelect Disabled="@{
-					CurrentBrandId==0
-}" class="form-control" id="model" @bind-Value="vehicleRequest.ModelId">
+				<InputSelect Disabled="@{CurrentBrandId==0}" class="form-control" id="model" @bind-Value="vehicleRequest.ModelId">
 					@if (CurrentBrandId == 0)
 					{
 						<option value="0" selected> Choose a Brand first</option>
@@ -94,6 +90,7 @@
 			</div>
 
 		</div>
+
 		<div class="col-md-6">
 
 			@* 	MaxWeigh *@
@@ -158,7 +155,7 @@
 					<span class="btn btn-outline-danger position-absolute top-0 end-0" @onclick="()=>DeleteImage(x)">X</span>
 				</div>
 				<div class="card-body">
-					<img src="data:image/png;base64,@x" alt="Imagen no cargada" class="img-fluid rounded" />
+					<img src="@x" alt="Imagen no cargada" class="img-fluid rounded" />
 				</div>
 			</div>
 		}
@@ -192,6 +189,7 @@
 		{
 			Year = 2020,
 			Doors = 4,
+			EngineId = 1,
 			Available = true,
 			MaxWeigh = 1000,
 			Price = 2999
@@ -217,7 +215,6 @@
 			Brands = brandR.Data?.ToList() ?? new();
 		}
 
-
 		var engineR = await ServEngine.Get();
 
 
@@ -230,13 +227,17 @@
 
 
 
-	private async void BrandChangedEvent(int brandId)
+	private async Task BrandChangedEvent(int brandId)
 	{
 		CurrentBrandId = brandId;
+
 		var r = await ServModel.GetByBrandId(brandId);
 		if (r.Succeeded)
 		{
 			ModelsAvailable = r.Data?.ToList() ?? new();
+			// if(ModelsAvailable.Count == 0){
+			// 	// sweet alert para mostrar que no hay modelos disponibles
+			// }
 		}
 		StateHasChanged();
 
@@ -248,13 +249,15 @@
 		try
 		{
 			var file = e.File;
-			if (file.Size <= LeftSpaceAvailable)
+			var contenType = file.ContentType;
+
+			var espacio = Encoding.UTF8.GetByteCount($"data:{file.ContentType};base64,");
+			if ((file.Size + espacio) <= LeftSpaceAvailable)
 			{
 				var buffer = new byte[file.Size];
 				await file.OpenReadStream().ReadAsync(buffer);
-				//!!!!!				Agregar: $"data:image/png;{file.ContentType}
 
-				string img = Convert.ToBase64String(buffer);
+				string img = $"data:{file.ContentType};base64,{Convert.ToBase64String(buffer)}";
 				if (vehicleRequest.Images.Contains(img))
 				{
 					messageImages.Add($"{file.Name} has been added before");
@@ -310,7 +313,9 @@
 		{
 			if (vehicleRequest.Images.Count > 0)
 			{
+			
 				var r = await serv.Create(vehicleRequest);
+
 				await Notification.InvokeAsync(r);
 				ResetForm();
 			}

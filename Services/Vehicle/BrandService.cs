@@ -16,7 +16,7 @@ public class BrandService(IdbContext context) : IBrandService
 	{
 		try
 		{
-			var r = context.Brands.Where(x => x.Name.ToLower().Contains(filter)).Select(x => new BrandResponse() { Id = x.Id, Name = x.Name, Image = x.Image }).ToList();
+			var r = context.Brands.Where(x => x.Name.ToLower().Contains(filter)).Select(x => new BrandResponse() { Id = x.Id, Name = x.Name, Image = x.Image }).OrderBy(x=>x.Name).ToList();
 			if (r is not null && r.Count > 0)
 			{
 				return ResultList<BrandResponse>.Success(r);

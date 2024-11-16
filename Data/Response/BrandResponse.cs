@@ -48,7 +48,6 @@ public class VehicleResponse
 	public int EngineId { get; set; }
 
 	public EngineResponse Engine { get; set; } = null!;
-	public string GetImage(string Image) => $"data:image/png;base64,{Image}";
 
 
 	public VehicleRequest ToRequest()
@@ -107,5 +106,5 @@ public class EngineResponse
 	public string FuelType { get; set; } = null!;
 
 
-	public string Description => $"{HorsePower} HP: {Cylinder} Cylinder : {FuelType}";
+	public string Description { get; set; } 
 }
